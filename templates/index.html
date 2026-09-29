@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NutriScan AI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div class="badge">NutriScan AI</div>
+      <h1>Dietary Interaction & Allergy Safety Engine</h1>
+      <p>Check a food's ingredients against your selected health conditions.</p>
+    </header>
+
+    <section class="card">
+      <h2>1. Select Health Conditions</h2>
+      <div id="conditions" class="conditions">Loading conditions...</div>
+    </section>
+
+    <section class="card">
+      <h2>2. Enter Food Ingredients</h2>
+      <textarea id="ingredients" rows="4" placeholder="Wheat Flour, Sugar, Salt, Monosodium Glutamate, Palm Oil, Milk Solids"></textarea>
+      <button id="analyzeBtn" onclick="analyze()">Analyze Safety Risks</button>
+      <p class="hint">Separate ingredients with commas.</p>
+      <p class="disclaimer">Educational project only. It does not replace medical or dietary advice from a qualified professional.</p>
+    </section>
+
+    <section id="result" class="card hidden"></section>
+
+    <section class="card">
+      <div class="history-head">
+        <h2>Saved Analysis History</h2>
+        <button class="secondary" onclick="loadHistory()">Refresh</button>
+      </div>
+      <div id="history">Loading history...</div>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
