@@ -1,17 +1,41 @@
-from pathlib import Path
+import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-BASE_DIR = Path(__file__).resolve().parent
-DATABASE_PATH = BASE_DIR / "nutriscan.db"
-DATABASE_URL = f"sqlite:///{DATABASE_PATH.as_posix()}"
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False},
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///./nutriscan.db"
 )
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgres://",
+        "postgresql://",
+        1
+    )
+
+
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={
+            "check_same_thread": False
+        }
+    )
+else:
+    engine = create_engine(
+        DATABASE_URL
+    )
+
+
+SessionLocal = sessionmaker(
+    bind=engine,
+    autoflush=False,
+    autocommit=False
+)
 
 
 class Base(DeclarativeBase):
@@ -20,6 +44,7 @@ class Base(DeclarativeBase):
 
 def get_db():
     db = SessionLocal()
+
     try:
         yield db
     finally:
